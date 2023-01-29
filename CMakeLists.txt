@@ -1,58 +1,19 @@
 cmake_minimum_required(VERSION 3.24)
-project(cvrpsep)
+project(bna LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_library(cvrpsep
-        basegrph.cpp
-        basegrph.h
-        binpack.cpp
-        binpack.h
-        blocks.cpp
-        blocks.h
-        brnching.cpp
-        brnching.h
-        capsep.cpp
-        capsep.h
-        cnstrmgr.cpp
-        cnstrmgr.h
-        combsep.cpp
-        combsep.h
-        compcuts.cpp
-        compcuts.h
-        compress.cpp
-        compress.h
-        cutbase.cpp
-        cutbase.h
-        fcapfix.cpp
-        fcapfix.h
-        fcisep.cpp
-        fcisep.h
-        fcits.cpp
-        fcits.h
-        glmsep.cpp
-        glmsep.h
-        grsearch.cpp
-        grsearch.h
-        hpmstar.cpp
-        hpmstar.h
-        htoursep.cpp
-        htoursep.h
-        intap.cpp
-        intap.h
-        memmod.cpp
-        memmod.h
-        mstarsep.cpp
-        mstarsep.h
-        mxf.cpp
-        mxf.h
-        newhtour.cpp
-        newhtour.h
-        memmod.cpp
-        memmod.h
-        mstarsep.cpp
-        mstarsep.h
-        mxf.cpp
-        mxf.h
-        newhtour.cpp
-        newhtour.h)
+#Necessary for shared library on Windows
+if (MSVC)
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
+
+add_library(cvrpsep SHARED)
+target_include_directories(cvrpsep PRIVATE "${PROJECT_SOURCE_DIR}")
+add_subdirectory("cvrpsep")
+
+add_executable(bna)
+target_sources(bna PRIVATE "bna/main.cpp")
+target_link_libraries(bna PRIVATE cvrpsep)
+
+install(TARGETS cvrpsep FILE_SET HEADERS)
